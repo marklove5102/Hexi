@@ -56,7 +56,7 @@ public:
 	 * @param length The number of bytes to read into the buffer.
 	 */
 	void read(void* destination, std::size_t length) override {
-		assert(destination && !region_overlap(buffer_.data(), buffer_.size(), destination, length));
+		assert(destination && !impl::region_overlap(buffer_.data(), buffer_.size(), destination, length));
 		std::memcpy(destination, buffer_.data() + read_, length);
 		read_ += length;
 	}
@@ -83,7 +83,7 @@ public:
 	 * @param length The number of bytes to copy.
 	 */
 	void copy(void* destination, std::size_t length) const override {
-		assert(destination && !region_overlap(buffer_.data(), buffer_.size(), destination, length));
+		assert(destination && !impl::region_overlap(buffer_.data(), buffer_.size(), destination, length));
 		std::memcpy(destination, buffer_.data() + read_, length);
 	}
 

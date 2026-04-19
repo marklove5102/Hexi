@@ -108,7 +108,7 @@ public:
 	 * @param length The number of bytes to copy.
 	 */
 	void copy(void* destination, size_type length) const {
-		assert(destination && !region_overlap(buffer_.data(), buffer_.size(), destination, length));
+		assert(destination && !impl::region_overlap(buffer_.data(), buffer_.size(), destination, length));
 		std::memcpy(destination, read_ptr(), length);
 	}
 
@@ -153,7 +153,7 @@ public:
 	 * @param length Number of bytes to write from the source.
 	 */
 	void write(const void* source, size_type length) {
-		assert(source && !region_overlap(source, length, buffer_.data(), buffer_.size()));
+		assert(source && !impl::region_overlap(source, length, buffer_.data(), buffer_.size()));
 		const auto min_req_size = write_ + length;
 
 		if(buffer_.size() < min_req_size) [[likely]] {

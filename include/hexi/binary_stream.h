@@ -235,7 +235,7 @@ public:
 	 */
 	binary_stream& operator<<(const has_shl_override<binary_stream> auto& data)
 	requires writeable<buf_type> {
-		return *this << data;
+		return data << *this;
 	}
 
 	/**
@@ -699,7 +699,7 @@ public:
 	 * @return Reference to the current stream.
 	 */
 	binary_stream& operator>>(has_shr_override<binary_stream> auto&& data) {
-		return *this >> data;
+		return data >> *this;
 	}
 
 	/**

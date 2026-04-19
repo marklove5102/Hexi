@@ -1777,7 +1777,7 @@ public:
 	 * @param length The number of bytes to copy.
 	 */
 	void copy(void* destination, size_type length) const {
-		assert(destination && !region_overlap(buffer_.data(), buffer_.size(), destination, length));
+		assert(destination && !impl::region_overlap(buffer_.data(), buffer_.size(), destination, length));
 		std::memcpy(destination, read_ptr(), length);
 	}
 
@@ -1822,7 +1822,7 @@ public:
 	 * @param length Number of bytes to write from the source.
 	 */
 	void write(const void* source, size_type length) {
-		assert(source && !region_overlap(source, length, buffer_.data(), buffer_.size()));
+		assert(source && !impl::region_overlap(source, length, buffer_.data(), buffer_.size()));
 		const auto min_req_size = write_ + length;
 
 		if(buffer_.size() < min_req_size) [[likely]] {
@@ -2350,7 +2350,7 @@ struct intrusive_storage final {
 	 * @return The number of bytes copied, which may be less than requested.
 	 */
 	std::size_t write(const auto source, std::size_t length) {
-		assert(!region_overlap(source, length, storage.data(), storage.size()));
+		assert(!impl::region_overlap(source, length, storage.data(), storage.size()));
 		std::size_t write_len = block_size - write_offset;
 
 		if(write_len > length) {
@@ -2377,7 +2377,7 @@ struct intrusive_storage final {
 	 * @return The number of bytes copied, which may be less than requested.
 	 */
 	std::size_t copy(auto destination, const std::size_t length) const {
-		assert(!region_overlap(storage.data(), storage.size(), destination, length));
+		assert(!impl::region_overlap(storage.data(), storage.size(), destination, length));
 		std::size_t read_len = block_size - read_offset;
 
 		if(read_len > length) {
@@ -4107,7 +4107,7 @@ public:
 	 * @param length The number of bytes to copy.
 	 */
 	void copy(void* destination, size_type length) const {
-		assert(!region_overlap(buffer_.data(), buffer_.size(), destination, length));
+		assert(!impl::region_overlap(buffer_.data(), buffer_.size(), destination, length));
 
 		if(length > size()) {
 			HEXI_THROW(buffer_underrun(length, read_, size()));
@@ -4271,7 +4271,7 @@ public:
 	 * @param length Number of bytes to write from the source.
 	 */
 	void write(const void* source, size_type length) {
-		assert(!region_overlap(source, length, buffer_.data(), buffer_.size()));
+		assert(!impl::region_overlap(source, length, buffer_.data(), buffer_.size()));
 
 		if(free() < length) {
 			HEXI_THROW(buffer_overflow(length, write_, free()));
@@ -5639,7 +5639,7 @@ public:
 	 * @param length The number of bytes to read into the buffer.
 	 */
 	void read(void* destination, std::size_t length) override {
-		assert(destination && !region_overlap(buffer_.data(), buffer_.size(), destination, length));
+		assert(destination && !impl::region_overlap(buffer_.data(), buffer_.size(), destination, length));
 		std::memcpy(destination, buffer_.data() + read_, length);
 		read_ += length;
 	}
@@ -5666,7 +5666,7 @@ public:
 	 * @param length The number of bytes to copy.
 	 */
 	void copy(void* destination, std::size_t length) const override {
-		assert(destination && !region_overlap(buffer_.data(), buffer_.size(), destination, length));
+		assert(destination && !impl::region_overlap(buffer_.data(), buffer_.size(), destination, length));
 		std::memcpy(destination, buffer_.data() + read_, length);
 	}
 
@@ -5829,7 +5829,7 @@ public:
 	 * @param length Number of bytes to write from the source.
 	 */
 	void write(const void* source, std::size_t length) override {
-		assert(source && !region_overlap(source, length, buffer_.data(), buffer_.size()));
+		assert(source && !impl::region_overlap(source, length, buffer_.data(), buffer_.size()));
 		const auto min_req_size = write_ + length;
 
 		if(buffer_.size() < min_req_size) [[likely]] {

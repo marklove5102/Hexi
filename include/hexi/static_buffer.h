@@ -91,7 +91,7 @@ public:
 	 * @param length The number of bytes to copy.
 	 */
 	void copy(void* destination, size_type length) const {
-		assert(!region_overlap(buffer_.data(), buffer_.size(), destination, length));
+		assert(!impl::region_overlap(buffer_.data(), buffer_.size(), destination, length));
 
 		if(length > size()) {
 			HEXI_THROW(buffer_underrun(length, read_, size()));
@@ -255,7 +255,7 @@ public:
 	 * @param length Number of bytes to write from the source.
 	 */
 	void write(const void* source, size_type length) {
-		assert(!region_overlap(source, length, buffer_.data(), buffer_.size()));
+		assert(!impl::region_overlap(source, length, buffer_.data(), buffer_.size()));
 
 		if(free() < length) {
 			HEXI_THROW(buffer_overflow(length, write_, free()));

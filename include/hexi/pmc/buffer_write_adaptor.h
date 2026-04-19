@@ -53,7 +53,7 @@ public:
 	 * @param length Number of bytes to write from the source.
 	 */
 	void write(const void* source, std::size_t length) override {
-		assert(source && !region_overlap(source, length, buffer_.data(), buffer_.size()));
+		assert(source && !impl::region_overlap(source, length, buffer_.data(), buffer_.size()));
 		const auto min_req_size = write_ + length;
 
 		if(buffer_.size() < min_req_size) [[likely]] {
